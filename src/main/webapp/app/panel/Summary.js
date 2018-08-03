@@ -340,12 +340,20 @@ Ext.define('Voyant.panel.Summary', {
     	}
     	
     },
-     
     showMoreDistinctiveWords: function() {
     	var distinctiveWordsContainer = this.queryById('distinctiveWords');
+	     /**
+    what's list?
+     */
     	var list = distinctiveWordsContainer.getTargetEl().selectNode("ol");
+	    /**
+    count: length of documents or tokens?
+     */
     	var count = Ext.dom.Query.select("li:not(.more)", list).length;
+	    /** numberOfDocumentsForDistinctiveWords is this the TF part? 
+	    TF(t) = (Number of times term t appears in a document) / (Total number of terms in the document).*/
     	var numberOfDocumentsForDistinctiveWords = parseInt(this.getApiParam('numberOfDocumentsForDistinctiveWords'));
+	  /** what is range?*/
     	var range = this.getCorpus().getDocuments().getRange(count, count+numberOfDocumentsForDistinctiveWords-1);
     	if (range && Ext.isArray(range)) {
     		var docIndex = [];
@@ -358,9 +366,11 @@ Ext.define('Voyant.panel.Summary', {
     				params: {
     					docIndex: docIndex,
     					perDocLimit: parseInt(this.getApiParam("limit")),
+					/**so it takes the number of words excluding the stoplist?*/
     					limit: numberOfDocumentsForDistinctiveWords*parseInt(this.getApiParam("limit")),
 						stopList: this.getApiParam('stopList'),
-    					sort: 'TFIDF',
+					/**where is tfidf defined?*/
+					sort: 'TFIDF',
     					dir: 'DESC',
     					forTool: 'summary'
     				},
